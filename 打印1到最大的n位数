@@ -1,0 +1,32 @@
+    //打印1到最大的n位数
+
+    void printNumbers(int n)
+    {
+        char* number=new char[n+1];
+        for(int i=0;i<10;i++)
+        {
+            number[0]=i+'0';
+            print(number,n,0);
+        }
+        delete[] number;
+    }
+    void print(char* number,int n,int pos)
+    {
+        if(pos==n)
+        {
+            int i=0;
+            int flag=false;
+            for(;i<n;i++)
+            {
+                if(number[i]!=0)flag=true;
+                if(flag)cout<<number[i]-'0';
+            }
+            cout<<endl;
+            return;
+        }
+        for(int i=0;i<10;i++)
+        {
+            number[pos+1]=i+'0';
+            print(number,n,pos+1);
+        }
+    }
