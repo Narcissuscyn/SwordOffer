@@ -195,41 +195,41 @@ public:
 	}
 
 	//64.栈和队列 滑动窗口的最大值
-	vector<int> maxInWindows(const vector<int>& num, unsigned int size)
+	//滑动窗口的最大值
+
+std::vector<int> maxWindows(const std::vector<int> &nums,unsigned int size)
+{
+	std::vector<int> res;
+
+	std::deque<int> dq;//保存的是nums的索引
+	if(nums.size()<=0||nums.size()<size||size<1)return res;
+
+	for(unsigned int i=0;i<size;i++)
 	{
-
-		vector<int> result;
-		int len = num.size();
-		if ( len== 0||len<size||size<1)return result;
-		stack<int>a, b;
-		int max_val = num[0];
-		for (int i = 0; i < size; i++)
+		if(!dq.empty()&&nums[i]>nums[dq.back()])
 		{
-			if (num[i] > max_val)max_val = num[i];
-			a.push(num[i]);
+			dq.pop_back();
 		}
-		result.push_back(max_val);
-		for (int i = size; i < len; i++)
-		{
-			a.push(num[i]);
-			max_val = num[i];
-			while (a.size()!=1)
-			{
-				int top = a.top();
-				if (top > max_val)max_val = top;
-				b.push(top);
-				a.pop();
-			}
-			a.pop();
-			result.push_back(max_val);
-
-			while (!b.empty())
-			{
-				a.push(b.top()); b.pop();
-			}
-		}
-		return result;
+		dq.push_back(i);
 	}
+
+	for(unsigned int i=size;i<nums.size();i++)
+	{
+		res.push_back(nums[dq.front()]);
+
+		while(!dq.empty()&&nums[i]>nums[dq.back()])
+		{
+			dq.pop_back();
+		}
+		while(!dq.empty()&&dq.front()<=i-size)
+		{
+			dq.pop_front();
+		}
+		dq.push_back(i);
+	}
+	res.push_back(nums[dq.front()]);
+	return res;
+}
 
 	//65.矩阵中的路径
 	bool hasPath(char* matrix, int rows, int cols, char* str)
